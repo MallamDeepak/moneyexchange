@@ -7,9 +7,33 @@ const currencyRoutes = require("./routes/currencyRoutes");
 
 const app = express();
 
+const parseAllowedOrigins = () => {
+  const defaults = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://moneyexchange-ten.vercel.app",
+  ];
+  const configured = [process.env.FRONTEND_URL, process.env.FRONTEND_URLS]
+    .filter(Boolean)
+    .flatMap((value) => value.split(","))
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+  return new Set([...defaults, ...configured]);
+};
+
+const allowedOrigins = parseAllowedOrigins();
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.has(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
   })
 );
 app.use(express.json());
