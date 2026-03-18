@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ quiet: true });
 const express = require("express");
 const cors = require("cors");
 const connectDb = require("./config/db");
@@ -23,9 +23,8 @@ app.use("/api/currency", currencyRoutes);
 
 const PORT = Number(process.env.PORT) || 5000;
 
-// Bind locally by default to avoid accidental public exposure.
-// Set HOST=0.0.0.0 in production/container environments where you intend to expose it.
-const HOST = process.env.HOST || "127.0.0.1";
+// In hosted/container environments, bind to all interfaces so the platform can route traffic.
+const HOST = process.env.HOST || (process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1");
 
 const startServer = async () => {
   try {
