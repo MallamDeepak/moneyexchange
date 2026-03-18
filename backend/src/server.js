@@ -23,11 +23,22 @@ const parseAllowedOrigins = () => {
 };
 
 const allowedOrigins = parseAllowedOrigins();
+const allowedOriginPatterns = [
+  /^https:\/\/moneyexchange-[a-z0-9-]+-mallam-deepaks-projects\.vercel\.app$/i,
+];
+
+const isAllowedOrigin = (origin) => {
+  if (allowedOrigins.has(origin)) {
+    return true;
+  }
+
+  return allowedOriginPatterns.some((pattern) => pattern.test(origin));
+};
 
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.has(origin)) {
+      if (!origin || isAllowedOrigin(origin)) {
         callback(null, true);
         return;
       }
