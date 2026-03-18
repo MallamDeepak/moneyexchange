@@ -37,5 +37,3 @@ const startServer = async () => {
 };
 
 startServer();
-//demo.user01@moneyexchange.local
-//Password@123

@@ -14,7 +14,11 @@ const seedUsers = async () => {
     serverSelectionTimeoutMS: 10000,
   });
 
-  const plainPassword = "Password@123";
+  const plainPassword = process.env.SEED_USERS_PASSWORD;
+  if (!plainPassword) {
+    throw new Error("SEED_USERS_PASSWORD is missing in .env");
+  }
+
   const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
   let created = 0;
@@ -45,7 +49,7 @@ const seedUsers = async () => {
   });
 
   console.log(`Seed complete. Created: ${created}. Total seeded users present: ${totalSeedUsers}.`);
-  console.log("Seeded login password for all demo users: Password@123");
+  console.log("Seeded login password for all demo users is read from SEED_USERS_PASSWORD.");
 };
 
 seedUsers()
