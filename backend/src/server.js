@@ -12,6 +12,7 @@ const parseAllowedOrigins = () => {
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "https://moneyexchange-ten.vercel.app",
+    "https://moneyexchange-backend.vercel.app",
   ];
   const configured = [process.env.FRONTEND_URL, process.env.FRONTEND_URLS]
     .filter(Boolean)
@@ -24,7 +25,7 @@ const parseAllowedOrigins = () => {
 
 const allowedOrigins = parseAllowedOrigins();
 const allowedOriginPatterns = [
-  /^https:\/\/moneyexchange-[a-z0-9-]+-mallam-deepaks-projects\.vercel\.app$/i,
+  /^https:\/\/moneyexchange(?:-[a-z0-9-]+)?\.vercel\.app$/i,
 ];
 
 const isAllowedOrigin = (origin) => {
